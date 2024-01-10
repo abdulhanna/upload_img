@@ -9,6 +9,7 @@ import cors from 'cors'
 import {v2 as cloudinary} from "cloudinary"
 import dotenv from 'dotenv'
 import chunkUpload from './chunkUpload'
+import upload1 from "./chunk"
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/chunk',chunkUpload)
+app.use('/single',upload1)
 
 app.get("/healthy", (req, res) => {
   console.log({ req });

@@ -54,8 +54,22 @@ cloudinary.config({
     const writeStream = fs.createWriteStream(`${mergedFilePath}/${fileName}`);
     for (let i = 0; i < totalChunks; i++) {
         const chunkFilePath = `${chunkDir}/${fileName}.part_${i}`;
-        const chunkBuffer = await fs.promises.readFile(chunkFilePath);
+        // const chunkBuffer = await fs.promises.readFile(chunkFilePath);
+        let chunkBuffer
+        try {
+            // const chunkBuffer = await fs.promises.readFile(chunkFilePath);
+             chunkBuffer = fs.readFileSync(chunkFilePath);
+
+            console.log(`Chunk ${i} Content Size:`, chunkBuffer.length);
+        } catch (error) {
+            console.error(`Error reading chunk ${i}:`, error);
+        }
+        
         writeStream.write(chunkBuffer);
+//         const mergedFileContent = await fs.promises.readFile(`${mergedFilePath}/${fileName}`, 'utf-8');
+// console.log('Merged File Content:', mergedFileContent);
+// console.log('Merged File Size:', mergedFileContent.length);
+
         console.log(chunkFilePath, i);
         fs.unlinkSync(chunkFilePath); // Delete the individual chunk file after merging
     }
